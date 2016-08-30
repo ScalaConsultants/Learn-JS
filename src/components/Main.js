@@ -2,15 +2,24 @@ require('normalize.css/normalize.css');
 require('styles/App.css');
 
 import React from 'react';
-
-let yeomanImage = require('../images/yeoman.png');
+import Recipes from '../components/Recipes';
 
 class AppComponent extends React.Component {
   render() {
+    let recipesRepo = new Recipes
+    let recipes = recipesRepo.search()
     return (
       <div className="index">
-        <img src={yeomanImage} alt="Yeoman Generator" />
-        <div className="notice">Please edit <code>src/components/Main.js</code> to get started!</div>
+        <h1 className="title">Recipies</h1>
+        <div className="search-box"><input type="text" value="Search here..." /></div>
+        <div className="recipes-list">
+        {recipes.map((recipe) => {
+        	return <div className="recipe-wrap">
+        	  <a href="#" title={recipe.description}><span className="recipe-name">{recipe.name}</span></a>
+        	</div>
+        })}
+        </div>
+        <div className="footer">Footer</div>
       </div>
     );
   }
