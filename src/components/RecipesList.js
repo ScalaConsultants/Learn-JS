@@ -1,21 +1,39 @@
-require('normalize.css/normalize.css');
-require('styles/App.css');
-
 import React, { Component } from 'react';
 import RecipeBox from './RecipeBox.js';
 
 class RecipesList extends Component {
+    constructor() {
+        super();
+        this.searchFilter = this.searchFilter.bind(this);
+    }
+
+    searchFilter(word, filters) {
+        let toFilter = true;
+        filters.forEach(filter => {
+            if(word.indexOf(filter)!==-1) {
+                toFilter = false;
+            }
+        }
+        )
+        return toFilter;
+    }
+
     render() {
-        const recipesBoxes = this.props.data.map(recipe => {
-            return (
+        let recipes = [];
+        this.props.data.map(recipe => {
+            // if(recipe.name.indexOf(text)===-1) {
+            if(this.searchFilter(recipe.name, this.props.filterArrayText)) {
+                return;
+            } else {
+            recipes.push(
                 <RecipeBox recipeName={recipe.name} description={recipe.description} image={recipe.image} />
             )
+        }
         });
         return (
             <div className="recipeList">
-				<input type="text" placeholder="Search recipes..." />
 				<div id="cen">
-					{recipesBoxes}
+					{recipes}
 				</div>
 			</div>
         )
@@ -23,7 +41,8 @@ class RecipesList extends Component {
 }
 
 RecipesList.propTypes = {
-    data: React.PropTypes.arrayOf(React.PropTypes.object)
+    data: React.PropTypes.arrayOf(React.PropTypes.object),
+    filterArrayText: React.PropTypes.arrayOf(React.PropTypes.string)
 }
 
 export default RecipesList;
