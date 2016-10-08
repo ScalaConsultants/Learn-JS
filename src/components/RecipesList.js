@@ -19,7 +19,8 @@ class RecipesList extends Component {
     render() {
         const recipesBoxes = this.state.recipesToShow.map(recipe => {
             return (
-                <RecipeBox key={recipe.name} recipeId={recipe.id} recipeName={recipe.name} recipeImage={recipe.image} />
+                <RecipeBox key={recipe.name} recipe={recipe} />
+                // <RecipeBox key={recipe.name} recipeId={recipe.id} recipeName={recipe.name} recipeImage={recipe.image} />
             );
         });
         return (
