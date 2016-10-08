@@ -1,7 +1,11 @@
 /* 
  * Combine all available reducers to a single root reducer.
  */
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
+import AllRecipesReducer from './reducer-recipes';
 
-const reducers = {};
-module.exports = combineReducers(reducers);
+const reducers = combineReducers({
+    allRecipes: AllRecipesReducer,
+});
+
+export default reducers;

@@ -4,6 +4,7 @@ require('styles/App.css');
 import React, { Component } from 'react';
 import RecipeBox from './RecipeBox.js';
 import SearchRecipesService from './../services/SearchRecipesService.js';
+import {connect} from 'react-redux';
 
 class RecipesList extends Component {
     componentWillMount() {
@@ -34,8 +35,14 @@ class RecipesList extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        allRecipes: state.allRecipes
+    }
+}
+
 RecipesList.propTypes = {
     allRecipes: React.PropTypes.arrayOf(React.PropTypes.object)
 }
 
-export default RecipesList;
+export default connect(mapStateToProps)(RecipesList);
