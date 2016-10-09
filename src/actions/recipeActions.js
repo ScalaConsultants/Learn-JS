@@ -1,5 +1,4 @@
 export const openContextMenu = (openedContextMenuId) => {
-  console.log('action works, you clicked: ' + openedContextMenuId);
     return {
         type: 'OPEN_CONTEXT_MENU',
         payload: openedContextMenuId
@@ -11,4 +10,18 @@ export const closeContextMenu = () => {
       type: 'CLOSE_CONTEXT_MENU',
       payload: ''
   }
+};
+
+export const hoverRecipeBox = (hoveredRecipeBoxId) => {
+    return {
+        type: 'HOVER_RECIPE_BOX',
+        payload: hoveredRecipeBoxId
+    }
+};
+
+export const unhoverRecipeBox = () => {
+    return {
+        type: 'UNHOVER_RECIPE_BOX',
+        payload: ''
+    }
 };

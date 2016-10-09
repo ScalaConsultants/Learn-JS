@@ -8,19 +8,14 @@ class ContextMenu extends React.Component {
     constructor(props) {
         super(props);
         this.elementUniqueId = 'context-menu-' + props.contextID;
-        this.recipeBoxId = props.contextID;
         this.state = {
             target: ''
         }
     }
 
     render() {
-        // if (this.recipeBoxId === this.props.recipe.currentlyOpenContextMenuId) {
-        //     console.log('after render:');
-        //     console.log(this.props.recipe);
-        //     console.log('my name is: ' + this.elementUniqueId);
-        // }
-        const visibilityClass = (this.recipeBoxId === this.props.recipe.currentlyOpenContextMenuId) ? 'visible context-menu' : 'invisible context-menu';
+
+        const visibilityClass = (this.elementUniqueId === this.props.recipe.currentlyOpenContextMenuId) ? 'visible context-menu' : 'invisible context-menu';
         return (
             <div id={this.elementUniqueId} className={visibilityClass} onMouseLeave={this.props.closeContextMenu}>
 
