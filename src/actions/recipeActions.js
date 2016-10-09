@@ -3,6 +3,8 @@ export const CLOSE_CONTEXT_MENU = 'CLOSE_CONTEXT_MENU';
 export const HOVER_RECIPE_BOX = 'HOVER_RECIPE_BOX';
 export const UNHOVER_RECIPE_BOX = 'UNHOVER_RECIPE_BOX';
 export const PRINT_RECIPE = 'PRINT_RECIPE';
+export const STAR_RECIPE = 'STAR_RECIPE';
+export const REMOVE_STAR_RECIPE = 'REMOVE_STAR_RECIPE';
 
 
 export const openContextMenu = (openedContextMenuId) => {
@@ -37,5 +39,19 @@ export const printRecipe = (path) => {
     return {
         type: PRINT_RECIPE,
         payload: path
+    }
+};
+
+export const starRecipe = (recipeId) => {
+    return {
+        type: STAR_RECIPE,
+        payload: recipeId
+    }
+};
+
+export const removeStarRecipe = (recipeId) => {
+    return {
+        type: REMOVE_STAR_RECIPE,
+        payload: recipeId
     }
 };

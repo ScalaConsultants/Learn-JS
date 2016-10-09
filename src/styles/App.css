@@ -68,7 +68,7 @@ body {
 .recipeDesc{
   position: absolute;
   bottom: 0px;
-  width: 60%;
+  width: 100%;
   line-height: 10px;
   color: white;
   background-color: rgba(0, 0, 0, 0.2);
@@ -84,6 +84,12 @@ img.more-icon {
   width: 32px;
 
   vertical-align: middle;
+}
+
+.recipeBox img.star-icon {
+  height: 40px;
+  width: 40px;
+  float: right;
 }
 
 h3.recipe-box-text {

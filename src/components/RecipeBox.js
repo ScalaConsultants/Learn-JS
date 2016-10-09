@@ -2,16 +2,19 @@ import React, {Component} from 'react';
 import ContextMenu from './ReactContextMenu';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {openContextMenu} from '../actions/recipeActions';
-import {hoverRecipeBox, unhoverRecipeBox, printRecipe} from '../actions/recipeActions';
+import {openContextMenu, hoverRecipeBox, unhoverRecipeBox, printRecipe, starRecipe, removeStarRecipe} from '../actions/recipeActions';
 import MoreIcon from '../images/moreIcon.png';
 import StarIcon from '../images/starIcon.png';
 import PdfIcon from '../images/pdfIcon.png';
 
 class RecipeBox extends Component {
 
-    starRecipeHandler(event) {
-        console.log('Starring ' + this.props.recipe.name, event);
+    starRecipeHandler() {
+        this.props.starRecipe(this.props.recipe.id);
+    }
+
+    removeStarRecipeHandler() {
+        this.props.removeStarRecipe(this.props.recipe.id);
     }
 
     printRecipeHandler() {
@@ -33,17 +36,24 @@ class RecipeBox extends Component {
     }
 
     render() {
-        // const {recipeId, recipeName} = this.props.recipe;
         const recipeId = this.props.recipe.id;
         const recipeName = this.props.recipe.name;
 
         const name = 'recipe-box-' + recipeId;
+        const hoverClass = ((name) === this.props.recipeFromState.currentlyHoverRecipeBoxId) ? 'recipeBox recipe-hover' : 'recipeBox recipe-no-hover';
+
         const contextMenuItems = [
-            {'icon': StarIcon, 'label': 'Add to favourites', 'function': this.starRecipeHandler.bind(this)},
             {'icon': PdfIcon, 'label': 'Get as file', 'function': this.printRecipeHandler.bind(this)}
         ];
 
-        const hoverClass = ((name) === this.props.recipeFromState.currentlyHoverRecipeBoxId) ? 'recipeBox recipe-hover' : 'recipeBox recipe-no-hover';
+        let starImg;
+        if (this.props.starredRecipes.indexOf(recipeId) > -1) {
+            starImg = <img className="star-icon" src={StarIcon} />
+            contextMenuItems.unshift({'icon': StarIcon, 'label': 'Remove from favourites', 'function': this.removeStarRecipeHandler.bind(this)});
+        }
+        else {
+            contextMenuItems.unshift({'icon': StarIcon, 'label': 'Add to favourites', 'function': this.starRecipeHandler.bind(this)});
+        }
 
         return (
             <div className={hoverClass}
@@ -56,13 +66,13 @@ class RecipeBox extends Component {
                 <div className="recipeDesc">
                     <img className="more-icon" src={MoreIcon} onClick={this.openMenuHandler.bind(this)}></img>
                     <h3 className="recipe-box-text">{recipeName}</h3>
+                    {starImg}
                 </div>
 
                 <ContextMenu contextID={name} items={contextMenuItems}></ContextMenu>
             </div>
         );
     }
-
 }
 
 RecipeBox.propTypes = {
@@ -71,7 +81,8 @@ RecipeBox.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        recipeFromState: state.recipe
+        recipeFromState: state.recipe,
+        starredRecipes: state.starredRecipes
     };
 }
 
@@ -80,7 +91,9 @@ function matchDispatchToProps(dispatch) {
         openContextMenu: openContextMenu,
         hoverRecipeBox: hoverRecipeBox,
         unhoverRecipeBox: unhoverRecipeBox,
-        printRecipe: printRecipe
+        printRecipe: printRecipe,
+        starRecipe: starRecipe,
+        removeStarRecipe: removeStarRecipe
     }, dispatch);
 }
 
