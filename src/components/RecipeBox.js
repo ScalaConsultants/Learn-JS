@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import ContextMenu from './ReactContextMenu';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {openContextMenu} from '../actions/recipeActions';
 import MoreIcon from '../images/moreIcon.png';
 import StarIcon from '../images/starIcon.png';
 import PdfIcon from '../images/pdfIcon.png';
@@ -28,8 +31,9 @@ class RecipeBox extends Component {
         const name = event.target.id;
         const menu = this.refs[name];
         if (menu != null) {
-            menu.openContextMenu({'target': name});
+            // menu.openContextMenu({'target': name});
         }
+        this.props.openCon(name);
     }
 
     render() {
@@ -66,4 +70,13 @@ RecipeBox.propTypes = {
     recipe: React.PropTypes.object
 }
 
-export default RecipeBox;
+function mapStateToProps(state) {
+    return {
+    };
+}
+
+function matchDispatchToProps(dispatch) {
+    return bindActionCreators({openCon: openContextMenu}, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(RecipeBox);
