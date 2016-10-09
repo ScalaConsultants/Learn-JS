@@ -29,11 +29,7 @@ class RecipeBox extends Component {
         event.preventDefault();
 
         const name = event.target.id;
-        const menu = this.refs[name];
-        if (menu != null) {
-            // menu.openContextMenu({'target': name});
-        }
-        this.props.openCon(name);
+        this.props.openContextMenu(name);
     }
 
     render() {
@@ -60,7 +56,7 @@ class RecipeBox extends Component {
                     <h3 className="recipe-box-text">{recipeName}</h3>
                 </div>
 
-                <ContextMenu ref={name} contextID={name} items={contextMenuItems}></ContextMenu>
+                <ContextMenu contextID={name} items={contextMenuItems}></ContextMenu>
             </div>
         );
     }
@@ -76,7 +72,7 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch) {
-    return bindActionCreators({openCon: openContextMenu}, dispatch);
+    return bindActionCreators({openContextMenu: openContextMenu}, dispatch);
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(RecipeBox);

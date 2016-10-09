@@ -5,3 +5,10 @@ export const openContextMenu = (openedContextMenuId) => {
         payload: openedContextMenuId
     }
 };
+
+export const closeContextMenu = () => {
+  return {
+      type: 'CLOSE_CONTEXT_MENU',
+      payload: ''
+  }
+};
