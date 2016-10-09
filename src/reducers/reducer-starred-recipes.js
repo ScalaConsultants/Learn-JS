@@ -1,17 +1,15 @@
 import * as actions from '../actions/recipeActions';
 
-export default function (state = [], action) {
+export default function (state = new Set(), action) {
     switch (action.type) {
 
         case actions.STAR_RECIPE:
-            return [...state, action.payload];
+            return state.add(action.payload);
 
         case actions.REMOVE_STAR_RECIPE:
-
-            let newArr = [...state];
-            let indexPosition = newArr.indexOf(action.payload);
-            newArr.splice(indexPosition, 1);
-            return newArr;
+            let newSet = new Set(state);
+            newSet.delete(action.payload);
+            return newSet;
     }
     return state;
 }

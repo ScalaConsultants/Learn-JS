@@ -47,7 +47,7 @@ class RecipeBox extends Component {
         ];
 
         let starImg;
-        if (this.props.starredRecipes.indexOf(recipeId) > -1) {
+        if (this.props.starredRecipes.has(recipeId)) {
             starImg = <img className="star-icon" src={StarIcon} />
             contextMenuItems.unshift({'icon': StarIcon, 'label': 'Remove from favourites', 'function': this.removeStarRecipeHandler.bind(this)});
         }
