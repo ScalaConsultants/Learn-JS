@@ -1,17 +1,22 @@
-// const InitialState = Record({
-//
-// });
+import * as actions from '../actions/recipeActions';
 
 export default function (state = {currentlyOpenContextMenuId: '', currentlyHoverRecipeBoxId: ''}, action) {
     switch (action.type) {
-        case 'OPEN_CONTEXT_MENU':
+
+        case actions.OPEN_CONTEXT_MENU:
             return {...state, currentlyOpenContextMenuId: action.payload};
-        case 'CLOSE_CONTEXT_MENU':
+
+        case actions.CLOSE_CONTEXT_MENU:
             return {...state, currentlyOpenContextMenuId: ''};
-        case 'HOVER_RECIPE_BOX':
+
+        case actions.HOVER_RECIPE_BOX:
             return {...state, currentlyHoverRecipeBoxId: action.payload};
-        case 'UNHOVER_RECIPE_BOX':
+
+        case actions.UNHOVER_RECIPE_BOX:
             return {...state, currentlyHoverRecipeBoxId: ''};
+
+        case actions.PRINT_RECIPE:
+            window.open(action.payload);
     }
     return state;
 }

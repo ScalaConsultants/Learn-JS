@@ -3,7 +3,7 @@ import ContextMenu from './ReactContextMenu';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {openContextMenu} from '../actions/recipeActions';
-import {hoverRecipeBox, unhoverRecipeBox} from '../actions/recipeActions';
+import {hoverRecipeBox, unhoverRecipeBox, printRecipe} from '../actions/recipeActions';
 import MoreIcon from '../images/moreIcon.png';
 import StarIcon from '../images/starIcon.png';
 import PdfIcon from '../images/pdfIcon.png';
@@ -15,12 +15,8 @@ class RecipeBox extends Component {
     }
 
     printRecipeHandler() {
-        window.open('/pdf/dummyRecipe.pdf');
+        this.props.printRecipe('/pdf/dummyRecipe.pdf');
     }
-
-    // hoverHandler() {
-    //     this.setState({isHovering: !this.state.isHovering})
-    // }
 
     openMenuHandler(event) {
         event.preventDefault();
@@ -47,7 +43,7 @@ class RecipeBox extends Component {
             {'icon': PdfIcon, 'label': 'Get as file', 'function': this.printRecipeHandler.bind(this)}
         ];
 
-        const hoverClass = ((name) === this.props.recipex.currentlyHoverRecipeBoxId) ? 'recipeBox recipe-hover' : 'recipeBox recipe-no-hover';
+        const hoverClass = ((name) === this.props.recipeFromState.currentlyHoverRecipeBoxId) ? 'recipeBox recipe-hover' : 'recipeBox recipe-no-hover';
 
         return (
             <div className={hoverClass}
@@ -75,7 +71,7 @@ RecipeBox.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        recipex: state.recipe
+        recipeFromState: state.recipe
     };
 }
 
@@ -83,7 +79,8 @@ function matchDispatchToProps(dispatch) {
     return bindActionCreators({
         openContextMenu: openContextMenu,
         hoverRecipeBox: hoverRecipeBox,
-        unhoverRecipeBox: unhoverRecipeBox
+        unhoverRecipeBox: unhoverRecipeBox,
+        printRecipe: printRecipe
     }, dispatch);
 }
 
