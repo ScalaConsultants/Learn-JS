@@ -1,8 +1,7 @@
-//adapted from https://github.com/amurp/react-context-menu
 import React, {PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {closeContextMenu} from '../actions/recipeActions';
+import * as actions from '../actions/recipeActions';
 
 class ContextMenu extends React.Component {
 
@@ -46,7 +45,9 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch) {
-    return bindActionCreators({closeContextMenu: closeContextMenu}, dispatch);
+    return bindActionCreators({
+        closeContextMenu: actions.closeContextMenu
+    }, dispatch);
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(ContextMenu);

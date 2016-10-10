@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import ContextMenu from './ReactContextMenu';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {openContextMenu, hoverRecipeBox, unhoverRecipeBox, printRecipe, starRecipe, removeStarRecipe} from '../actions/recipeActions';
+import * as actions from '../actions/recipeActions';
 import MoreIcon from '../images/moreIcon.png';
 import StarIcon from '../images/starIcon.png';
 import PdfIcon from '../images/pdfIcon.png';
@@ -90,12 +90,12 @@ function mapStateToProps(state) {
 
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
-        openContextMenu: openContextMenu,
-        hoverRecipeBox: hoverRecipeBox,
-        unhoverRecipeBox: unhoverRecipeBox,
-        printRecipe: printRecipe,
-        starRecipe: starRecipe,
-        removeStarRecipe: removeStarRecipe
+        openContextMenu: actions.openContextMenu,
+        hoverRecipeBox: actions.hoverRecipeBox,
+        unhoverRecipeBox: actions.unhoverRecipeBox,
+        printRecipe: actions.printRecipe,
+        starRecipe: actions.starRecipe,
+        removeStarRecipe: actions.removeStarRecipe
     }, dispatch);
 }
 

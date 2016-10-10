@@ -2,9 +2,12 @@ require('normalize.css/normalize.css');
 require('styles/App.css');
 
 import React, {Component, PropTypes} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import RecipeBox from './RecipeBox.js';
 import SearchRecipesService from './../services/SearchRecipesService.js';
-import {connect} from 'react-redux';
+import * as actions from '../actions/recipeActions';
+
 
 class RecipesList extends Component {
 
@@ -13,18 +16,19 @@ class RecipesList extends Component {
     }
 
     componentWillMount() {
-        this.setState({recipesToShow: this.props.allRecipes});
         this.search = new SearchRecipesService();
+        this.props.showRecipes(this.props.allRecipes);
     }
 
     handleSearch(event) {
         const searchQuery = event.target.value;
         const allRecipes = this.props.allRecipes;
-        this.setState({recipesToShow: this.search.filterRecipes(searchQuery, allRecipes)});
+        let filteredRecipesList = this.search.filterRecipes(searchQuery, allRecipes);
+        this.props.showRecipes(filteredRecipesList);
     }
 
     render() {
-        const recipesBoxes = this.state.recipesToShow.map(recipe => {
+        const recipesBoxes = this.props.recipesToShow.map(recipe => {
             return (
                 <RecipeBox key={recipe.name} recipeFromParent={recipe}/>
             );
@@ -44,8 +48,15 @@ class RecipesList extends Component {
 
 function mapStateToProps(state) {
     return {
-        allRecipes: state.allRecipes
+        allRecipes: state.allRecipes,
+        recipesToShow: state.recipesToShow
     }
 }
 
-export default connect(mapStateToProps)(RecipesList);
+function matchDispatchToProps(dispatch) {
+    return bindActionCreators({
+        showRecipes: actions.showRecipes
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(RecipesList);

@@ -5,7 +5,7 @@ export const UNHOVER_RECIPE_BOX = 'UNHOVER_RECIPE_BOX';
 export const PRINT_RECIPE = 'PRINT_RECIPE';
 export const STAR_RECIPE = 'STAR_RECIPE';
 export const REMOVE_STAR_RECIPE = 'REMOVE_STAR_RECIPE';
-
+export const SHOW_RECIPES = 'SHOW_RECIPES';
 
 export const openContextMenu = (openedContextMenuId) => {
     return {
@@ -53,5 +53,12 @@ export const removeStarRecipe = (recipeId) => {
     return {
         type: REMOVE_STAR_RECIPE,
         payload: recipeId
+    }
+};
+
+export const showRecipes = (recipesToShow) => {
+    return {
+        type: SHOW_RECIPES,
+        payload: recipesToShow
     }
 };
