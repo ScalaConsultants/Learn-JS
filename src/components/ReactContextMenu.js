@@ -1,28 +1,27 @@
 //adapted from https://github.com/amurp/react-context-menu
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {closeContextMenu} from '../actions/recipeActions';
 
 class ContextMenu extends React.Component {
-    constructor(props) {
-        super(props);
-        this.elementUniqueId = 'context-menu-' + props.contextID;
-        this.state = {
-            target: ''
-        }
+
+    static propTypes = {
+        recipe: PropTypes.object.isRequired,
+        contextID: PropTypes.string.isRequired,
+        items: PropTypes.arrayOf(PropTypes.object).isRequired
     }
 
     render() {
-
-        const visibilityClass = (this.elementUniqueId === this.props.recipe.currentlyOpenContextMenuId) ? 'visible context-menu' : 'invisible context-menu';
+        const elementUniqueId = 'context-menu-' + this.props.contextID;
+        const visibilityClass = (elementUniqueId === this.props.recipe.currentlyOpenContextMenuId) ? 'visible context-menu' : 'invisible context-menu';
         return (
-            <div id={this.elementUniqueId} className={visibilityClass} onMouseLeave={this.props.closeContextMenu}>
+            <div id={elementUniqueId} className={visibilityClass} onMouseLeave={this.props.closeContextMenu}>
 
                 {this.props.items.map((item) => {
                     const clickHandler = () => {
                         this.props.closeContextMenu();
-                        item.function(this.state.target);
+                        item.function();
                     };
 
                     const label = item.label;

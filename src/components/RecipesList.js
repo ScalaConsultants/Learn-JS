@@ -1,12 +1,17 @@
 require('normalize.css/normalize.css');
 require('styles/App.css');
 
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import RecipeBox from './RecipeBox.js';
 import SearchRecipesService from './../services/SearchRecipesService.js';
 import {connect} from 'react-redux';
 
 class RecipesList extends Component {
+
+    static propTypes = {
+        allRecipes: PropTypes.arrayOf(PropTypes.object).isRequired
+    }
+
     componentWillMount() {
         this.setState({recipesToShow: this.props.allRecipes});
         this.search = new SearchRecipesService();
@@ -21,8 +26,7 @@ class RecipesList extends Component {
     render() {
         const recipesBoxes = this.state.recipesToShow.map(recipe => {
             return (
-                <RecipeBox key={recipe.name} recipe={recipe}/>
-                // <RecipeBox key={recipe.name} recipeId={recipe.id} recipeName={recipe.name} recipeImage={recipe.image} />
+                <RecipeBox key={recipe.name} recipeFromParent={recipe}/>
             );
         });
         return (
@@ -42,10 +46,6 @@ function mapStateToProps(state) {
     return {
         allRecipes: state.allRecipes
     }
-}
-
-RecipesList.propTypes = {
-    allRecipes: React.PropTypes.arrayOf(React.PropTypes.object)
 }
 
 export default connect(mapStateToProps)(RecipesList);

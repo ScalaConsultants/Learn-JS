@@ -7,6 +7,7 @@ import RecipeReducer from './reducer-recipe';
 import StarredReducer from './reducer-starred-recipes';
 
 const reducers = combineReducers({
+
     allRecipes: AllRecipesReducer,
     recipe: RecipeReducer,
     starredRecipes: StarredReducer
