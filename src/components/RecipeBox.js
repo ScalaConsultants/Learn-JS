@@ -1,64 +1,102 @@
-import React, { Component } from 'react';
+import React, {Component, PropTypes} from 'react';
 import ContextMenu from './ReactContextMenu';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as actions from '../actions/recipeActions';
 import MoreIcon from '../images/moreIcon.png';
 import StarIcon from '../images/starIcon.png';
 import PdfIcon from '../images/pdfIcon.png';
 
 class RecipeBox extends Component {
-    constructor() {
-      super();
-      this.state = {isHovering: false};
+
+    static propTypes = {
+        recipeFromParent: PropTypes.object.isRequired,
+        recipe: PropTypes.object.isRequired,
+        starredRecipes: PropTypes.arrayOf(PropTypes.number).isRequired
     }
-    starRecipeHandler(event) {
-      console.log('Starring ' + this.props.recipeName, event);
+
+    starRecipeHandler() {
+        this.props.starRecipe(this.props.recipeFromParent.id);
     }
+
+    removeStarRecipeHandler() {
+        this.props.removeStarRecipe(this.props.recipeFromParent.id);
+    }
+
     printRecipeHandler() {
-      window.open('/pdf/dummyRecipe.pdf');
+        this.props.printRecipe('/pdf/dummyRecipe.pdf');
     }
-    hoverHandler(){
-      this.setState({isHovering: !this.state.isHovering})
-    }
-    openMenuHandler(event){
-      event.preventDefault();
 
-      const name = event.target.id;
-      const menu = this.refs[name];
-      if(menu != null) {
-        menu.openContextMenu({'target': name});
-      }
+    openMenuHandler(event) {
+        event.preventDefault();
+
+        const recipeBox = event.target.closest('.recipeBox');
+        const openedContextMenuId = 'context-menu-' + recipeBox.id;
+
+        this.props.openContextMenu(openedContextMenuId);
     }
+
+    mouseOverHandler(event) {
+        const name = event.currentTarget.id;
+        this.props.hoverRecipeBox(name);
+    }
+
     render() {
-      const {recipeId, recipeName} = this.props;
+        const recipeId = this.props.recipeFromParent.id;
+        const recipeName = this.props.recipeFromParent.name;
 
-      const name = 'recipe-box-' + recipeId;
-      const contextMenuItems = [
-        {'icon': StarIcon, 'label': 'Add to favourites', 'function': this.starRecipeHandler.bind(this)},
-        {'icon': PdfIcon, 'label': 'Get as file', 'function': this.printRecipeHandler.bind(this)}
-      ];
-      const hoverClass = (this.state.isHovering)? 'recipeBox recipe-hover' : 'recipeBox recipe-no-hover';
+        const name = 'recipe-box-' + recipeId;
+        const hoverClass = ((name) === this.props.recipe.currentlyHoverRecipeBoxId) ? 'recipeBox recipe-hover' : 'recipeBox recipe-no-hover';
 
-      return (
-        <div className={hoverClass}
-          onMouseOver={this.hoverHandler.bind(this)}
-          onMouseOut={this.hoverHandler.bind(this)}>
+        const contextMenuItems = [
+            {'icon': PdfIcon, 'label': 'Get as file', 'function': this.printRecipeHandler.bind(this)}
+        ];
 
-				  <img src={this.props.recipeImage}></img>
+        let starImg;
+        if (this.props.starredRecipes.indexOf(recipeId) > -1) {
+            starImg = <img className="star-icon" src={StarIcon} />
+            contextMenuItems.unshift({'icon': StarIcon, 'label': 'Remove from favourites', 'function': this.removeStarRecipeHandler.bind(this)});
+        }
+        else {
+            contextMenuItems.unshift({'icon': StarIcon, 'label': 'Add to favourites', 'function': this.starRecipeHandler.bind(this)});
+        }
 
-          <div className="recipeDesc">
-            <img id={name} className="more-icon" src={MoreIcon} onClick={this.openMenuHandler.bind(this)}></img>
-            <h3 className="recipe-box-text">{recipeName}</h3>
-          </div>
+        return (
+            <div className={hoverClass}
+                 id={name}
+                 onMouseOver={this.mouseOverHandler.bind(this)}
+                 onMouseOut={this.props.unhoverRecipeBox}>
 
-          <ContextMenu ref={name} contextID={name} items={contextMenuItems}></ContextMenu>
-        </div>
-      );
+                <img src={this.props.recipeFromParent.image}></img>
+
+                <div className="recipeDesc">
+                    <img className="more-icon" src={MoreIcon} onClick={this.openMenuHandler.bind(this)}></img>
+                    <h3 className="recipe-box-text">{recipeName}</h3>
+                    {starImg}
+                </div>
+
+                <ContextMenu contextID={name} items={contextMenuItems}/>
+            </div>
+        );
     }
 }
 
-RecipeBox.propTypes = {
-    image: React.PropTypes.string,
-    recipeName: React.PropTypes.string,
-    description: React.PropTypes.string
+function mapStateToProps(state) {
+    return {
+        recipe: state.recipe,
+        starredRecipes: state.starredRecipes
+    };
 }
 
-export default RecipeBox;
+function matchDispatchToProps(dispatch) {
+    return bindActionCreators({
+        openContextMenu: actions.openContextMenu,
+        hoverRecipeBox: actions.hoverRecipeBox,
+        unhoverRecipeBox: actions.unhoverRecipeBox,
+        printRecipe: actions.printRecipe,
+        starRecipe: actions.starRecipe,
+        removeStarRecipe: actions.removeStarRecipe
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(RecipeBox);
