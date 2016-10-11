@@ -75,7 +75,7 @@ class RecipeBox extends Component {
                     {starImg}
                 </div>
 
-                <ContextMenu contextID={name} items={contextMenuItems}></ContextMenu>
+                <ContextMenu contextID={name} items={contextMenuItems}/>
             </div>
         );
     }

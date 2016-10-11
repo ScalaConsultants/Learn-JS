@@ -12,7 +12,8 @@ import * as actions from '../actions/recipeActions';
 class RecipesList extends Component {
 
     static propTypes = {
-        allRecipes: PropTypes.arrayOf(PropTypes.object).isRequired
+        allRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
+        recipesToShow: PropTypes.arrayOf(PropTypes.object).isRequired
     }
 
     componentWillMount() {
