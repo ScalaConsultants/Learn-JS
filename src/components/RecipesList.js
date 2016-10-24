@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import RecipeBox from './RecipeBox.js';
 import {mapDispatchToProps, mapStateToProps} from '../containers/mapToProps';
 
+
 @connect(mapStateToProps, mapDispatchToProps)
 class RecipesList extends Component {
     static propTypes = {
@@ -26,7 +27,7 @@ class RecipesList extends Component {
 
         const recipesBoxes = this.props.allRecipes.map(recipe => {
           return (
-            <RecipeBox key={recipe.name} recipe={recipe} onStarClick={onStarClick}/>
+            <RecipeBox key={recipe.id} recipe={recipe} onStarClick={onStarClick}/>
           );
         });
 

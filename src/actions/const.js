@@ -3,5 +3,6 @@
  */
 export const ActionTypes = {
   STAR_ITEM: 'start_item',
-  UPDATE_SEARCH_QUERY: 'update_search'
+  UPDATE_SEARCH_QUERY: 'update_search',
+  RECEIVE_RECIPES: 'receive_recipes'
 };
