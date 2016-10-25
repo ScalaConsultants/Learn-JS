@@ -43,20 +43,16 @@ router.route('/recipes')
 
 router.route('/recipes/:recipeId')
   .put(function (req, res) {
+    console.log("Received put.");
     cache.data = cache.data.map(function (recipe) {
       if (recipe.id !== Number(req.params.recipeId)) {
         return recipe;
       }
-      var newRecipe = {};
 
-      for (var key in req.body) {
-        newRecipe[key] = req.body[key]
-      }
-
-      db.saveDataToFile(cache.data);
-
-      return newRecipe;
+      return Object.assign({}, recipe, req.body);
     });
+
+    db.saveDataToFile(cache.data);
 
     res.status(200).json({status: 200});
   });

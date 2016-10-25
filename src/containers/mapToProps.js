@@ -2,7 +2,11 @@
  * Contains business logic for Recipes presentation classes
  */
 
-import { starRecipeActionCreator, queryRecipeActionCreator } from '../actions/recipeActionCreators';
+import {
+  starRecipeActionCreator,
+  queryRecipeActionCreator,
+  fetchRecipesActionCreator
+} from '../actions/recipeActionCreators';
 import SearchRecipesService from './../services/SearchRecipesService.js'
 
 export const mapDispatchToProps = (dispatch) => {
@@ -12,6 +16,9 @@ export const mapDispatchToProps = (dispatch) => {
     },
     onSearchChanged: (event) => {
       dispatch(queryRecipeActionCreator(event.target.value))
+    },
+    onApplicationStart: () => {
+      dispatch(fetchRecipesActionCreator())
     }
   }
 };
@@ -22,7 +29,8 @@ export const mapStateToProps = (state, dispatch) => {
   //combine recipes data and callbacks
 
   const combinedProps = Object.assign({
-    allRecipes: search.filterRecipes(state.SearchReducer.query, state.RecipeReducer)
+    msg: state.RecipeReducer.msg,
+    allRecipes: search.filterRecipes(state.SearchReducer.query, state.RecipeReducer.recipes)
   }, mapDispatchToProps(dispatch));
 
   return combinedProps;
