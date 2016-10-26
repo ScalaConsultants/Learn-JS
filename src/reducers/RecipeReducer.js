@@ -1,5 +1,3 @@
-import fetch from 'isomorphic-fetch';
-
 import {ActionTypes} from '../actions/const'
 
 const RecipeReducer = (recipesState = {
@@ -7,22 +5,13 @@ const RecipeReducer = (recipesState = {
   recipes: []
 }, action) => {
   switch (action.type) {
-    case ActionTypes.STAR_ITEM:
+    case ActionTypes.STAR_ITEM_SUCCESS:
       const modifiedState = recipesState.recipes.map((currentRecipes) => {
         if (currentRecipes.id == action.recipeId) {
-          const modifiedItem = Object.assign({}, currentRecipes);
-          modifiedItem.isStarred = !modifiedItem.isStarred;
-
-          const myHeaders = new Headers();
-          myHeaders.append('Content-Type', 'application/json');
-
-          fetch(`http://localhost:8585/api/recipes/${action.recipeId}`, {
-            method: 'PUT',
-            headers: myHeaders,
-            body: JSON.stringify(modifiedItem)
-          });
-
-          return modifiedItem;
+          return Object.assign({},
+            currentRecipes,
+            {isStarred: !currentRecipes.isStarred}
+          );
         } else {
           return currentRecipes;
         }
@@ -30,6 +19,12 @@ const RecipeReducer = (recipesState = {
       return {
         ...recipesState,
         recipes: modifiedState
+      };
+    case ActionTypes.STAR_ITEM_FAILURE:
+      console.log('Could not send data. Try again later.');
+      return {
+        ...recipesState,
+        msg: 'Could not send data. Try again later.'
       };
     case ActionTypes.RECEIVE_RECIPES_SUCCESS:
       const recipes = action.recipes;

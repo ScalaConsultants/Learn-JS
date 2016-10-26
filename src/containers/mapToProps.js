@@ -3,7 +3,7 @@
  */
 
 import {
-  starRecipeActionCreator,
+  dispatchStarredActionCreator,
   queryRecipeActionCreator,
   fetchRecipesActionCreator
 } from '../actions/recipeActionCreators';
@@ -12,7 +12,7 @@ import SearchRecipesService from './../services/SearchRecipesService.js'
 export const mapDispatchToProps = (dispatch) => {
   return {
     onStarClick: (recipeId) => {
-      dispatch(starRecipeActionCreator(recipeId));
+      dispatch(dispatchStarredActionCreator(recipeId));
     },
     onSearchChanged: (event) => {
       dispatch(queryRecipeActionCreator(event.target.value))

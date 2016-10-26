@@ -41,7 +41,7 @@ router.route('/recipes')
     res.json({response: 'ok'})
   });
 
-router.route('/recipes/:recipeId')
+router.route('/recipes/:recipeId/star')
   .put(function (req, res) {
     console.log("Received put.");
     cache.data = cache.data.map(function (recipe) {
@@ -49,7 +49,7 @@ router.route('/recipes/:recipeId')
         return recipe;
       }
 
-      return Object.assign({}, recipe, req.body);
+      return Object.assign({}, recipe, {isStarred: !recipe.isStarred});
     });
 
     db.saveDataToFile(cache.data);
