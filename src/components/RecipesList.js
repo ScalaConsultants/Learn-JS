@@ -15,14 +15,18 @@ class RecipesList extends Component {
         name: PropTypes.string.isRequired,
         description: PropTypes.string.isRequired,
         image: PropTypes.string.isRequired,
-        isStarred: PropTypes.bool.isRequired
+        isStarred: PropTypes.bool.isRequired,
+        isError: PropTypes.bool // is optional
       })).isRequired,
+      isFetching: PropTypes.bool.isRequired, //TODO: should show spinner on filter too
+      query: PropTypes.string.isRequired,
       onStarClick: React.PropTypes.func.isRequired,
-      onSearchChanged: React.PropTypes.func.isRequired
+      onSearchChanged: React.PropTypes.func.isRequired,
+      onLoadMore: React.PropTypes.func.isRequired
     }
 
     render() {
-        const {onStarClick, onSearchChanged} = this.props;
+        const {onStarClick, onSearchChanged, onLoadMore} = this.props;
 
         const recipesBoxes = this.props.allRecipes.map(recipe => {
           return (
@@ -30,14 +34,24 @@ class RecipesList extends Component {
           );
         });
 
+        const offset = this.props.allRecipes.length;
+
+        const more = (this.props.isFetching)?
+          <img className="small-spinner" src="/images/spinner.png"></img>
+        :
+          <button className="show-more-button" onClick={onLoadMore.bind(this, offset, this.props.query)}>
+            Load more recipes
+          </button>;
+
         return (
           <div className="recipeList">
 				    <input type="text"
               placeholder="Search recipes..."
-              onChange={onSearchChanged} />
+              onChange={onSearchChanged.bind(this, offset)} />
             <div id="cen">
               {recipesBoxes}
             </div>
+            {more}
 			    </div>
         );
     }
